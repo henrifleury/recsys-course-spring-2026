@@ -18,6 +18,8 @@ from botify.recommenders.indexed import Indexed
 from botify.recommenders.sticky_artist import StickyArtist
 from botify.track import Catalog
 
+from botify.recommenders.lgbm_recommender import LGBMRecommender
+
 root = logging.getLogger()
 root.setLevel("INFO")
 
@@ -32,6 +34,8 @@ recommendations_lfm_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_LFM"
 recommendations_contextual_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_SASREC")
 
 recommendations_hstu_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_HSTU")
+
+recommendations_lgbm_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_LGBM")
 
 data_logger = DataLogger(app)
 atexit.register(data_logger.close)
@@ -67,12 +71,18 @@ catalog.upload_recommendations(
     "RECOMMENDATIONS_HSTU_FILE_PATH"
 )
 
+catalog.upload_recommendations(
+    recommendations_lgbm_redis.connection,
+    "RECOMMENDATIONS_LGBM_FILE_PATH"
+)
+
 
 sasrec_i2i_recommender = I2IRecommender(
     listen_history_redis.connection,
     recommendations_contextual_redis.connection,
     random_recommender,
 )
+
 
 parser = reqparse.RequestParser()
 parser.add_argument("track", type=int, location="json", required=True)
@@ -112,12 +122,14 @@ class NextTrack(Resource):
         args = parser.parse_args()
         persist_user_listen_history(user, args.track, args.time)
 
-        treatment = Experiments.HSTU.assign(user)
+        #treatment = Experiments.HSTU.assign(user)
+        treatment = Experiments.LGBM.assign(user)
 
         if treatment == Treatment.C:
             recommender = sasrec_i2i_recommender
         elif treatment == Treatment.T1:
-            recommender = Indexed(recommendations_hstu_redis.connection, catalog, random_recommender)
+            #recommender = Indexed(recommendations_hstu_redis.connection, catalog, random_recommender)
+            recommender = LGBMRecommender(recommendations_lgbm_redis.connection, catalog, random_recommender)
         else:
             recommender = random_recommender
 
