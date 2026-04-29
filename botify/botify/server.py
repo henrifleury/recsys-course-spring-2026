@@ -128,8 +128,8 @@ class NextTrack(Resource):
         if treatment == Treatment.C:
             recommender = sasrec_i2i_recommender
         elif treatment == Treatment.T1:
-            #recommender = Indexed(recommendations_hstu_redis.connection, catalog, random_recommender)
-            recommender = LGBMRecommender(recommendations_lgbm_redis.connection, catalog, random_recommender)
+            recommender = Indexed(recommendations_hstu_redis.connection, catalog, random_recommender)
+            #recommender = LGBMRecommender(recommendations_lgbm_redis.connection, catalog, random_recommender)
         else:
             recommender = random_recommender
 

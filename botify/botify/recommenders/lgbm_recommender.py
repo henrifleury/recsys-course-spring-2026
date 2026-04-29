@@ -1,5 +1,4 @@
 from .recommender import Recommender
-
 class LGBMRecommender(Recommender):
     def __init__(self, recommendations_redis, catalog, fallback):
         self.recommendations_redis = recommendations_redis

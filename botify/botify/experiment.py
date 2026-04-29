@@ -69,5 +69,5 @@ class Experiments:
     LGBM = Experiment("LGBM", Split.HALF_HALF)
 
     def __init__(self):
-        #self.experiments = [Experiments.HSTU]
-        self.experiments = [Experiments.LGBM]
+        self.experiments = [Experiments.HSTU]
+        #self.experiments = [Experiments.LGBM]

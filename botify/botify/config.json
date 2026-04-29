@@ -24,12 +24,12 @@
   "REDIS_RECOMMENDATIONS_HSTU_HOST": "redis",
   "REDIS_RECOMMENDATIONS_HSTU_PORT": 6379,
   "REDIS_RECOMMENDATIONS_HSTU_DB": 5,
-  "RECOMMENDATIONS_HSTU_FILE_PATH": "./data/hstu_recommendations.json",
+  "RECOMMENDATIONS_HSTU_FILE_PATH": "./data/my_hstu_recommendations_1.json",
 
   "REDIS_RECOMMENDATIONS_LGBM_HOST": "redis",
   "REDIS_RECOMMENDATIONS_LGBM_PORT": 6379,
   "REDIS_RECOMMENDATIONS_LGBM_DB": 6,
-  "RECOMMENDATIONS_LGBM_FILE_PATH": "./data/lgbm_recommendations.json",
+  "RECOMMENDATIONS_LGBM_FILE_PATH": "./data/my_hstu_recommendations_1.json",
 
 
 
